@@ -243,7 +243,8 @@ class App: AppCenterApplication, NSApplicationDelegate {
 
     func showUiOrCycleSelection(_ shortcutIndex: Int) {
         debugPrint("showUiOrCycleSelection")
-        if isFirstSummon {
+        debugPrint(shortcutIndex)
+        if isFirstSummon || self.shortcutIndex != shortcutIndex {
             debugPrint("showUiOrCycleSelection: isFirstSummon")
             isFirstSummon = false
             if Windows.list.count == 0 || CGWindow.isMissionControlActive() { hideUi(); return }

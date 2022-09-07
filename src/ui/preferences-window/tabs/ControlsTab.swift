@@ -7,9 +7,11 @@ class ControlsTab {
     static var shortcutsActions = [
         "holdShortcut": { App.app.focusTarget() },
         "holdShortcut2": { App.app.focusTarget() },
+        "holdShortcut3": { App.app.focusTarget() },
         "focusWindowShortcut": { App.app.focusTarget() },
         "nextWindowShortcut": { App.app.showUiOrCycleSelection(0) },
         "nextWindowShortcut2": { App.app.showUiOrCycleSelection(1) },
+        "nextWindowShortcut3": { App.app.showUiOrCycleSelection(2) },
         "previousWindowShortcut": { App.app.previousWindowShortcutWithRepeatingKey() },
         "→": { App.app.cycleSelection(.right) },
         "←": { App.app.cycleSelection(.left) },
@@ -43,12 +45,13 @@ class ControlsTab {
         let orPress = LabelAndControl.makeLabel(NSLocalizedString("While open, press:", comment: ""), shouldFit: false)
         let (holdShortcut, nextWindowShortcut, tab1View) = toShowSection("")
         let (holdShortcut2, nextWindowShortcut2, tab2View) = toShowSection("2")
-        let tabView = TabView([(NSLocalizedString("Shortcut 1", comment: ""), tab1View), (NSLocalizedString("Shortcut 2", comment: ""), tab2View)])
+        let (holdShortcut3, nextWindowShortcut3, tab3View) = toShowSection("3")
+        let tabView = TabView([(NSLocalizedString("Shortcut 1", comment: ""), tab1View), (NSLocalizedString("Shortcut 2", comment: ""), tab2View), (NSLocalizedString("Shortcut 3", comment: ""), tab3View)])
 
         ControlsTab.arrowKeysEnabledCallback(arrowKeysCheckbox)
         // trigger shortcutChanged for these shortcuts to trigger .restrictModifiers
         [holdShortcut, holdShortcut2].forEach { ControlsTab.shortcutChangedCallback($0[1] as! NSControl) }
-        [nextWindowShortcut, nextWindowShortcut2].forEach { ControlsTab.shortcutChangedCallback($0[0] as! NSControl) }
+        [nextWindowShortcut, nextWindowShortcut2, nextWindowShortcut3].forEach { ControlsTab.shortcutChangedCallback($0[0] as! NSControl) }
 
         let grid = GridView([
             [tabView],
@@ -79,7 +82,7 @@ class ControlsTab {
         let toShowExplanations2 = LabelAndControl.makeLabel(NSLocalizedString("Minimized windows:", comment: ""))
         let toShowExplanations3 = LabelAndControl.makeLabel(NSLocalizedString("Hidden windows:", comment: ""))
         let toShowExplanations4 = LabelAndControl.makeLabel(NSLocalizedString("Fullscreen windows:", comment: ""))
-        var holdShortcut = LabelAndControl.makeLabelWithRecorder(NSLocalizedString("Hold", comment: ""), "holdShortcut" + postfix, Preferences.holdShortcut[postfix == "" ? 0 : 1], false, labelPosition: .leftWithoutSeparator)
+        var holdShortcut = LabelAndControl.makeLabelWithRecorder(NSLocalizedString("Hold", comment: ""), "holdShortcut" + postfix, Preferences.holdShortcut[postfix == "" ? 0 : (Int(postfix)! - 1)], false, labelPosition: .leftWithoutSeparator)
         holdShortcut.append(LabelAndControl.makeLabel(NSLocalizedString("and press:", comment: "")))
         let holdAndPress = StackView(holdShortcut)
         let appsToShow = LabelAndControl.makeDropdown("appsToShow" + postfix, AppsToShowPreference.allCases)
@@ -90,7 +93,7 @@ class ControlsTab {
         let showFullscreenWindows = LabelAndControl.makeDropdown("showFullscreenWindows" + postfix, ShowHowPreference.allCases.filter { $0 != .showAtTheEnd })
         let separator = NSBox()
         separator.boxType = .separator
-        let nextWindowShortcut = LabelAndControl.makeLabelWithRecorder(NSLocalizedString("Select next window", comment: ""), "nextWindowShortcut" + postfix, Preferences.nextWindowShortcut[postfix == "" ? 0 : 1], labelPosition: .right)
+        let nextWindowShortcut = LabelAndControl.makeLabelWithRecorder(NSLocalizedString("Select next window", comment: ""), "nextWindowShortcut" + postfix, Preferences.nextWindowShortcut[postfix == "" ? 0 : (Int(postfix)! - 1)], labelPosition: .right)
         let shortcutStyle = LabelAndControl.makeLabelWithDropdown(NSLocalizedString("Then release:", comment: ""), "shortcutStyle" + postfix, ShortcutStylePreference.allCases)
         let toShowDropdowns = StackView([appsToShow, spacesToShow, screensToShow], .vertical, false)
         toShowDropdowns.spacing = TabView.padding
@@ -111,6 +114,7 @@ class ControlsTab {
     }
 
     private static func addShortcut(_ triggerPhase: ShortcutTriggerPhase, _ scope: ShortcutScope, _ shortcut: Shortcut, _ controlId: String, _ index: Int?) {
+        debugPrint("addShortcut", controlId, index)
         let atShortcut = ATShortcut(shortcut, controlId, scope, triggerPhase, index)
         removeShortcutIfExists(controlId) // remove the previous shortcut
         shortcuts[controlId] = atShortcut
@@ -133,10 +137,12 @@ class ControlsTab {
 
     @objc static func shortcutChangedCallback(_ sender: NSControl) {
         let controlId = sender.identifier!.rawValue
+        debugPrint("shortcutChangedCallback")
+        debugPrint(controlId)
         if controlId.hasPrefix("holdShortcut") {
-            let i = controlId == "holdShortcut" ? 0 : 1
+            let i = determineShortcutIndex("holdShortcut", controlId)
             addShortcut(.up, .global, Shortcut(keyEquivalent: Preferences.holdShortcut[i])!, controlId, i)
-            if let nextWindowShortcut = shortcutControls["nextWindowShortcut" + (i == 0 ? "" : "2")]?.0 {
+            if let nextWindowShortcut = shortcutControls["nextWindowShortcut" + (i == 0 ? "" : String(i + 1))]?.0 {
                 nextWindowShortcut.restrictModifiers([(sender as! CustomRecorderControl).objectValue!.modifierFlags])
                 shortcutChangedCallback(nextWindowShortcut)
             }
@@ -146,16 +152,25 @@ class ControlsTab {
                 removeShortcutIfExists(controlId)
                 restrictModifiersOfHoldShortcut(controlId, [])
             } else {
-                let i = controlId.hasPrefix("nextWindowShortcut") ? (controlId == "nextWindowShortcut" ? 0 : 1) : nil
+                let i = controlId.hasPrefix("nextWindowShortcut") ? determineShortcutIndex("nextWindowShortcut", controlId) : nil
                 addShortcut(.down, controlId.hasPrefix("nextWindowShortcut") ? .global : .local, Shortcut(keyEquivalent: newValue)!, controlId, i)
                 restrictModifiersOfHoldShortcut(controlId, [(sender as! CustomRecorderControl).objectValue!.modifierFlags])
             }
         }
     }
 
+    static func determineShortcutIndex(_ prefix: String, _ controlId: String) -> Int {
+        debugPrint("determineShortcutIndex", prefix, controlId)
+        if (controlId == prefix) {
+            return 0
+        }
+        let s = String(controlId.dropFirst(prefix.count))
+        return Int(s)! - 1
+    }
+
     private static func restrictModifiersOfHoldShortcut(_ controlId: String, _ modifiers: NSEvent.ModifierFlags) {
         if controlId.hasPrefix("nextWindowShortcut") {
-            let i = controlId == "nextWindowShortcut" ? "" : "2"
+            let i = String(controlId.dropFirst("nextWindowShortcut".count))
             if let holdShortcut = shortcutControls["holdShortcut" + i]?.0 {
                 holdShortcut.restrictModifiers(modifiers)
             }
@@ -168,7 +183,8 @@ class ControlsTab {
             return ""
         }
         if controlId.starts(with: "nextWindowShortcut") {
-            let holdShortcut = controlId.last == "2" ? Preferences.holdShortcut[1] : Preferences.holdShortcut[0]
+            let i = determineShortcutIndex("nextWindowShortcut", controlId)
+            let holdShortcut = Preferences.holdShortcut[i]
             return holdShortcut + baseValue
         }
         return baseValue

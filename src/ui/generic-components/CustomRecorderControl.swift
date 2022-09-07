@@ -81,6 +81,7 @@ class CustomRecorderControl: RecorderControl, RecorderControlDelegate {
     }
 
     private func isShortcutAlreadyAssigned(_ shortcut: Shortcut) -> ATShortcut? {
+        // TODO
         ControlsTab.shortcuts.values.first {
             if id == $0.id {
                 return false
@@ -103,7 +104,7 @@ class CustomRecorderControl: RecorderControl, RecorderControlDelegate {
                 }
             }
             if $0.id.starts(with: "nextWindowShortcut") {
-                let suffix = $0.id.last == "2" ? "2" : ""
+                let suffix = String($0.id.dropFirst("nextWindowShortcut".count))
                 return $0.shortcut.keyCode == shortcut.keyCode && ($0.shortcut.carbonModifierFlags ^ ControlsTab.shortcutControls["holdShortcut" + suffix]!.0.objectValue!.carbonModifierFlags) == shortcut.carbonModifierFlags
             }
             return $0.shortcut.keyCode == shortcut.keyCode && $0.shortcut.modifierFlags == shortcut.modifierFlags

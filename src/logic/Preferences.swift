@@ -13,8 +13,10 @@ class Preferences {
         "fontHeight": "15",
         "holdShortcut": "⌥",
         "holdShortcut2": "⌥",
+        "holdShortcut3": "⌥",
         "nextWindowShortcut": "⇥",
         "nextWindowShortcut2": keyAboveTabDependingOnInputSource(),
+        "nextWindowShortcut3": "_",
         "focusWindowShortcut": "Space",
         "previousWindowShortcut": "⇧",
         "cancelShortcut": "⎋",
@@ -27,10 +29,13 @@ class Preferences {
         "cursorFollowFocusEnabled": "false",
         "showMinimizedWindows": ShowHowPreference.show.rawValue,
         "showMinimizedWindows2": ShowHowPreference.show.rawValue,
+        "showMinimizedWindows3": ShowHowPreference.show.rawValue,
         "showHiddenWindows": ShowHowPreference.show.rawValue,
         "showHiddenWindows2": ShowHowPreference.show.rawValue,
+        "showHiddenWindows3": ShowHowPreference.show.rawValue,
         "showFullscreenWindows": ShowHowPreference.show.rawValue,
         "showFullscreenWindows2": ShowHowPreference.show.rawValue,
+        "showFullscreenWindows3": ShowHowPreference.show.rawValue,
         "showTabsAsWindows": "false",
         "hideColoredCircles": "false",
         "windowDisplayDelay": "0",
@@ -40,10 +45,13 @@ class Preferences {
         "alignThumbnails": AlignThumbnailsPreference.left.rawValue,
         "appsToShow": AppsToShowPreference.all.rawValue,
         "appsToShow2": AppsToShowPreference.active.rawValue,
+        "appsToShow3": AppsToShowPreference.active.rawValue,
         "spacesToShow": SpacesToShowPreference.all.rawValue,
         "spacesToShow2": SpacesToShowPreference.all.rawValue,
+        "spacesToShow3": SpacesToShowPreference.all.rawValue,
         "screensToShow": ScreensToShowPreference.all.rawValue,
         "screensToShow2": ScreensToShowPreference.all.rawValue,
+        "screensToShow3": ScreensToShowPreference.all.rawValue,
         "fadeOutAnimation": "false",
         "hideSpaceNumberLabels": "false",
         "hideStatusIcons": "false",
@@ -57,6 +65,7 @@ class Preferences {
         "windowMaxWidthInRow": "30",
         "shortcutStyle": ShortcutStylePreference.focusOnRelease.rawValue,
         "shortcutStyle2": ShortcutStylePreference.focusOnRelease.rawValue,
+        "shortcutStyle3": ShortcutStylePreference.focusOnRelease.rawValue,
         "hideAppBadges": "false",
         "hideWindowlessApps": "false",
         "hideThumbnails": "false",
@@ -81,8 +90,8 @@ class Preferences {
     static var rowsCount: CGFloat { defaults.cgfloat("rowsCount") }
     static var iconSize: CGFloat { defaults.cgfloat("iconSize") }
     static var fontHeight: CGFloat { defaults.cgfloat("fontHeight") }
-    static var holdShortcut: [String] { ["holdShortcut", "holdShortcut2"].map { defaults.string($0) } }
-    static var nextWindowShortcut: [String] { ["nextWindowShortcut", "nextWindowShortcut2"].map { defaults.string($0) } }
+    static var holdShortcut: [String] { ["holdShortcut", "holdShortcut2", "holdShortcut3"].map { defaults.string($0) } }
+    static var nextWindowShortcut: [String] { ["nextWindowShortcut", "nextWindowShortcut2", "nextWindowShortcut3"].map { defaults.string($0) } }
     static var focusWindowShortcut: String { defaults.string("focusWindowShortcut") }
     static var previousWindowShortcut: String { defaults.string("previousWindowShortcut") }
     static var cancelShortcut: String { defaults.string("cancelShortcut") }
@@ -112,13 +121,13 @@ class Preferences {
     static var alignThumbnails: AlignThumbnailsPreference { defaults.macroPref("alignThumbnails", AlignThumbnailsPreference.allCases) }
     static var updatePolicy: UpdatePolicyPreference { defaults.macroPref("updatePolicy", UpdatePolicyPreference.allCases) }
     static var crashPolicy: CrashPolicyPreference { defaults.macroPref("crashPolicy", CrashPolicyPreference.allCases) }
-    static var appsToShow: [AppsToShowPreference] { ["appsToShow", "appsToShow2"].map { defaults.macroPref($0, AppsToShowPreference.allCases) } }
-    static var spacesToShow: [SpacesToShowPreference] { ["spacesToShow", "spacesToShow2"].map { defaults.macroPref($0, SpacesToShowPreference.allCases) } }
-    static var screensToShow: [ScreensToShowPreference] { ["screensToShow", "screensToShow2"].map { defaults.macroPref($0, ScreensToShowPreference.allCases) } }
-    static var showMinimizedWindows: [ShowHowPreference] { ["showMinimizedWindows", "showMinimizedWindows2"].map { defaults.macroPref($0, ShowHowPreference.allCases) } }
-    static var showHiddenWindows: [ShowHowPreference] { ["showHiddenWindows", "showHiddenWindows2"].map { defaults.macroPref($0, ShowHowPreference.allCases) } }
-    static var showFullscreenWindows: [ShowHowPreference] { ["showFullscreenWindows", "showFullscreenWindows2"].map { defaults.macroPref($0, ShowHowPreference.allCases) } }
-    static var shortcutStyle: [ShortcutStylePreference] { ["shortcutStyle", "shortcutStyle2"].map { defaults.macroPref($0, ShortcutStylePreference.allCases) } }
+    static var appsToShow: [AppsToShowPreference] { ["appsToShow", "appsToShow2", "appsToShow3"].map { defaults.macroPref($0, AppsToShowPreference.allCases) } }
+    static var spacesToShow: [SpacesToShowPreference] { ["spacesToShow", "spacesToShow2", "spacesToShow3"].map { defaults.macroPref($0, SpacesToShowPreference.allCases) } }
+    static var screensToShow: [ScreensToShowPreference] { ["screensToShow", "screensToShow2", "screensToShow3"].map { defaults.macroPref($0, ScreensToShowPreference.allCases) } }
+    static var showMinimizedWindows: [ShowHowPreference] { ["showMinimizedWindows", "showMinimizedWindows2", "showMinimizedWindows3"].map { defaults.macroPref($0, ShowHowPreference.allCases) } }
+    static var showHiddenWindows: [ShowHowPreference] { ["showHiddenWindows", "showHiddenWindows2", "showHiddenWindows3"].map { defaults.macroPref($0, ShowHowPreference.allCases) } }
+    static var showFullscreenWindows: [ShowHowPreference] { ["showFullscreenWindows", "showFullscreenWindows2", "showMinimizedWindows3"].map { defaults.macroPref($0, ShowHowPreference.allCases) } }
+    static var shortcutStyle: [ShortcutStylePreference] { ["shortcutStyle", "shortcutStyle2", "shortcutStyle3"].map { defaults.macroPref($0, ShortcutStylePreference.allCases) } }
     static var menubarIcon: MenubarIconPreference { defaults.macroPref("menubarIcon", MenubarIconPreference.allCases) }
 
     // derived values
@@ -137,7 +146,7 @@ class Preferences {
 
     static func removeCorruptedPreferences() {
         // from v5.1.0+, there are crash reports of users somehow having their hold shortcuts set to ""
-        ["holdShortcut", "holdShortcut2"].forEach {
+        ["holdShortcut", "holdShortcut2", "holdShortcut3"].forEach {
             if let s = defaults.string(forKey: $0), s == "" {
                 defaults.removeObject(forKey: $0)
             }
@@ -242,12 +251,12 @@ class Preferences {
     @available(OSX, deprecated: 10.11)
     private static func migrateLoginItem() {
         do {
-            let loginItems = LSSharedFileListCreate(nil, kLSSharedFileListSessionLoginItems.takeRetainedValue(), nil).takeRetainedValue()
-            let loginItemsSnapshot = LSSharedFileListCopySnapshot(loginItems, nil).takeRetainedValue() as! [LSSharedFileListItem]
+            let loginItems = LSSharedFileListCreate(nil, kLSSharedFileListSessionLoginItems.takeRetainedValue(), nil)!.takeRetainedValue()
+            let loginItemsSnapshot = LSSharedFileListCopySnapshot(loginItems, nil)!.takeRetainedValue() as! [LSSharedFileListItem]
             let itemName = Bundle.main.bundleURL.lastPathComponent as CFString
             let itemUrl = URL(fileURLWithPath: Bundle.main.bundlePath) as CFURL
             loginItemsSnapshot.forEach {
-                if (LSSharedFileListItemCopyDisplayName($0)?.takeRetainedValue() == itemName) ||
+                if (LSSharedFileListItemCopyDisplayName($0).takeRetainedValue() == itemName) ||
                        (LSSharedFileListItemCopyResolvedURL($0, 0, nil)?.takeRetainedValue() == itemUrl) {
                     LSSharedFileListItemRemove(loginItems, $0)
                 }
@@ -434,11 +443,15 @@ enum ShowHowPreference: String, CaseIterable, MacroPreference {
 enum AppsToShowPreference: String, CaseIterable, MacroPreference {
     case all = "0"
     case active = "1"
+    case idea = "2"
+    case chrome = "3"
 
     var localizedString: LocalizedString {
         switch self {
             case .all: return NSLocalizedString("All apps", comment: "")
             case .active: return NSLocalizedString("Active app", comment: "")
+            case .idea: return NSLocalizedString("Intellij Idea", comment: "")
+            case .chrome: return NSLocalizedString("Google Chrome", comment: "")
         }
     }
 }
@@ -595,6 +608,7 @@ extension UserDefaults {
         if let c = UserDefaults.cache[key] {
             return c
         }
+        debugPrint("Unwrapping " + key)
         let v = defaults.string(forKey: key)!
         UserDefaults.cache[key] = v
         return v

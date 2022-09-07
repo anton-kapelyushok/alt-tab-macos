@@ -12,6 +12,8 @@ class KeyboardEvents {
         "nextWindowShortcut2": 1,
         "holdShortcut": 2,
         "holdShortcut2": 3,
+        "nextWindowShortcut3": 4,
+        "holdShortcut3": 5,
     ]
     static var eventHotKeyRefs = [String: EventHotKeyRef?]()
     static var hotKeyPressedEventHandler: EventHandlerRef?

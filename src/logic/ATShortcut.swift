@@ -53,14 +53,23 @@ class ATShortcut {
             // contains at least
             return modifiers == (modifiers | shortcut.carbonModifierFlags)
         }
-        let suffix = App.app.shortcutIndex == 0 ? "" : "2"
+        let suffix = App.app.shortcutIndex == 0 ? "" : String(App.app.shortcutIndex + 1)
         let holdModifiers = ControlsTab.shortcuts["holdShortcut" + suffix]!.shortcut.carbonModifierFlags
         // contains exactly or exactly + holdShortcut modifiers
         return modifiers == shortcut.carbonModifierFlags || modifiers == (shortcut.carbonModifierFlags | holdModifiers)
     }
 
     func shouldTrigger() -> Bool {
+        debugPrint("shouldTrigger", id)
+        debugPrint("index", index)
+        debugPrint("shortcutIndex", App.app.shortcutIndex)
+        debugPrint("triggerPhase", triggerPhase)
+        if (id.starts(with: "nextWindowShortcut")) {
+            App.app.appIsBeingUsed = true
+            return true
+        }
         if scope == .global {
+            debugPrint("scope global")
             if triggerPhase == .down && (!App.app.appIsBeingUsed || index == App.app.shortcutIndex) {
                 App.app.appIsBeingUsed = true
                 return true
@@ -70,10 +79,12 @@ class ATShortcut {
             }
         }
         if scope == .local {
+            debugPrint("scope local")
             if App.app.appIsBeingUsed && (index == nil || index == App.app.shortcutIndex) {
                 return true
             }
         }
+        debugPrint("should not trigger")
         return false
     }
 

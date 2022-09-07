@@ -234,6 +234,8 @@ class Windows {
                 }
             } ?? false) &&
             !(Preferences.appsToShow[App.app.shortcutIndex] == .active && window.application.runningApplication.processIdentifier != NSWorkspace.shared.frontmostApplication?.processIdentifier) &&
+            !(Preferences.appsToShow[App.app.shortcutIndex] == .idea && window.application.runningApplication.bundleIdentifier != "com.jetbrains.intellij") &&
+            !(Preferences.appsToShow[App.app.shortcutIndex] == .chrome && window.application.runningApplication.bundleIdentifier != "com.google.Chrome") &&
             !(!(Preferences.showHiddenWindows[App.app.shortcutIndex] != .hide) && window.isHidden) &&
             ((!Preferences.hideWindowlessApps && window.isWindowlessApp) ||
                 !window.isWindowlessApp &&

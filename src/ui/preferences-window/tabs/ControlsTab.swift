@@ -11,6 +11,7 @@ class ControlsTab {
         "holdShortcut4": { App.app.focusTarget() },
         "holdShortcut5": { App.app.focusTarget() },
         "holdShortcut6": { App.app.focusTarget() },
+        "holdShortcut7": { App.app.focusTarget() },
         "focusWindowShortcut": { App.app.focusTarget() },
         "nextWindowShortcut": { App.app.showUiOrCycleSelection(0) },
         "nextWindowShortcut2": { App.app.showUiOrCycleSelection(1) },
@@ -18,6 +19,7 @@ class ControlsTab {
         "nextWindowShortcut4": { App.app.showUiOrCycleSelection(3) },
         "nextWindowShortcut5": { App.app.showUiOrCycleSelection(4) },
         "nextWindowShortcut6": { App.app.showUiOrCycleSelection(5) },
+        "nextWindowShortcut7": { App.app.showUiOrCycleSelection(6) },
         "previousWindowShortcut": { App.app.previousWindowShortcutWithRepeatingKey() },
         "→": { App.app.cycleSelection(.right) },
         "←": { App.app.cycleSelection(.left) },
@@ -55,6 +57,7 @@ class ControlsTab {
         let (holdShortcut4, nextWindowShortcut4, tab4View) = toShowSection("4")
         let (holdShortcut5, nextWindowShortcut5, tab5View) = toShowSection("5")
         let (holdShortcut6, nextWindowShortcut6, tab6View) = toShowSection("6")
+        let (holdShortcut7, nextWindowShortcut7, tab7View) = toShowSection("7")
         let tabView = TabView([
             (NSLocalizedString("Shortcut 1", comment: ""), tab1View),
             (NSLocalizedString("Shortcut 2", comment: ""), tab2View),
@@ -62,12 +65,13 @@ class ControlsTab {
             (NSLocalizedString("Shortcut 4", comment: ""), tab4View),
             (NSLocalizedString("Shortcut 5", comment: ""), tab5View),
             (NSLocalizedString("Shortcut 6", comment: ""), tab6View),
+            (NSLocalizedString("Shortcut 7", comment: ""), tab7View),
         ])
 
         ControlsTab.arrowKeysEnabledCallback(arrowKeysCheckbox)
         // trigger shortcutChanged for these shortcuts to trigger .restrictModifiers
-        [holdShortcut, holdShortcut2, holdShortcut3, holdShortcut4, holdShortcut5, holdShortcut6].forEach { ControlsTab.shortcutChangedCallback($0[1] as! NSControl) }
-        [nextWindowShortcut, nextWindowShortcut2, nextWindowShortcut3, nextWindowShortcut4, nextWindowShortcut5, nextWindowShortcut6].forEach { ControlsTab.shortcutChangedCallback($0[0] as! NSControl) }
+        [holdShortcut, holdShortcut2, holdShortcut3, holdShortcut4, holdShortcut5, holdShortcut6, holdShortcut7].forEach { ControlsTab.shortcutChangedCallback($0[1] as! NSControl) }
+        [nextWindowShortcut, nextWindowShortcut2, nextWindowShortcut3, nextWindowShortcut4, nextWindowShortcut5, nextWindowShortcut6, nextWindowShortcut7].forEach { ControlsTab.shortcutChangedCallback($0[0] as! NSControl) }
 
         let grid = GridView([
             [tabView],

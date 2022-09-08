@@ -239,6 +239,7 @@ class Windows {
             !(Preferences.appsToShow[App.app.shortcutIndex] == .slack && window.application.runningApplication.bundleIdentifier != "com.tinyspeck.slackmacgap") &&
             !(Preferences.appsToShow[App.app.shortcutIndex] == .telegram && window.application.runningApplication.bundleIdentifier != "com.tdesktop.Telegram") &&
             !(Preferences.appsToShow[App.app.shortcutIndex] == .iterm && window.application.runningApplication.bundleIdentifier != "com.googlecode.iterm2") &&
+            !(Preferences.appsToShow[App.app.shortcutIndex] == .sublime && window.application.runningApplication.bundleIdentifier != "com.sublimetext.4") &&
             !(!(Preferences.showHiddenWindows[App.app.shortcutIndex] != .hide) && window.isHidden) &&
             ((!Preferences.hideWindowlessApps && window.isWindowlessApp) ||
                 !window.isWindowlessApp &&

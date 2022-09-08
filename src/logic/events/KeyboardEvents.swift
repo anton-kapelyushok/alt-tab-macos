@@ -10,10 +10,16 @@ class KeyboardEvents {
     static let globalShortcutsIds = [
         "nextWindowShortcut": 0,
         "nextWindowShortcut2": 1,
-        "holdShortcut": 2,
-        "holdShortcut2": 3,
-        "nextWindowShortcut3": 4,
-        "holdShortcut3": 5,
+        "nextWindowShortcut3": 2,
+        "nextWindowShortcut4": 3,
+        "nextWindowShortcut5": 4,
+        "nextWindowShortcut6": 5,
+        "holdShortcut": 6,
+        "holdShortcut2": 7,
+        "holdShortcut3": 8,
+        "holdShortcut4": 9,
+        "holdShortcut5": 10,
+        "holdShortcut6": 11,
     ]
     static var eventHotKeyRefs = [String: EventHotKeyRef?]()
     static var hotKeyPressedEventHandler: EventHandlerRef?
